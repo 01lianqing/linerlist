@@ -1,3 +1,4 @@
+//命名的习惯，独立词汇开头都是大写
 前提：顺序表
 #include <iostream>
 #include <cstdio>
@@ -16,6 +17,7 @@ typedef struct linerList
 p018
 第一题：删除最小值，最后的元素来替换最小值，返回最小值
 粗看：找到最小值，交换末尾值，删除末尾值，返回最小值
+再看的话，里面有两个量需要记录：Index和MinValue,由于随机查找，序号就可以得到最小值
 细看：序号标记法，O(n)得到最小值的编号，swap(),使得表长减一即可，最后返回
 code:
 ElemType ReturnMin_delete(SqList &List){
@@ -60,7 +62,8 @@ bool function(ElemType &returnValue,...)
 	if(empty()) return false;
 	...
 }
-
+debug:
+error：stray'\243'in program 是因为出现了非ASCII码字符
 final:
 //第一题
 bool ReturnMin_delete(SqList &List,ElemType &ReturnValue) {
@@ -79,3 +82,27 @@ bool ReturnMin_delete(SqList &List,ElemType &ReturnValue) {
     List.length--;
     return true;
 }
+
+第二题：空间复杂度为O(1)的逆置
+双指针：
+bool Reverse(SqList &list){
+	 if (List.length == 0) return false;
+	int left=0,right=list.length;
+	while(left<right){
+		swap(list.data[left],list.data[right]);
+		left++;
+		right--;
+	}
+	return true;
+}
+数学关系:交换i与len-i-1
+bool Reverse(SqList &list){
+	if (List.length == 0) return false;
+	int len = List.length;
+	for(int i=0;i<len/2;i++){
+		swap(List.data[i],List.data[len-i-1]);
+	}
+	return true;
+}
+
+第三题：删除表中的x，时间O(n),空间O(1)
