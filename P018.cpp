@@ -105,4 +105,41 @@ bool Reverse(SqList &list){
 	return true;
 }
 
-第三题：删除表中的x，时间O(n),空间O(1)
+第三题：删除表中所有的x，时间O(n),空间O(1)
+粗看：找一个，时间O(n)，删一个，时间O(n)
+a、如果不考虑顺序的话，可以采用第一题中的方法从末尾复写，
+找到一个就从末尾找一个复写，记录个数，最后修改length
+在优化的可以想到双指针，找到就复写
+b、考虑到顺序，每一个需要移动的数字，需要移动的长度仅仅依赖于
+他前面出现的x的个数k，这样看来只需要记录一下当前的k
+细看：
+    一、从后向前找的时候，遇到相同的直接跳过，从前向后找的时候，遇到相等的停下来
+    然后把后面找到的复写掉前面的，最后修改长度就是right的值 --left的值
+    二、建立一个计数器count，遇到不相等的就移动到index-count位置，至于length就
+    是原来的长度去掉count
+code：
+bool DeleteSameValue1(SqList &list,ElemType value)
+{
+	if(list.length==0) return false	;
+	int right=0,left=list.length-1;
+	while(right<left){
+		while(list.data[right] != value) right++;
+		while(list.data[left] == value && right<left) left--;
+		list.data[right]=list.data[left];
+		list.data[left]=value;//debug:保证left可以向前动，是已经知道一个数字的交换
+	}
+	list.length=left;
+}
+
+bool DeleteSameValue2(SqList list,Elemtype value){
+	if(list.length==0) return false	;
+	int count=0,i=0;
+	while(i<list.length){
+		if(list.data[i] == value) count++;
+		else{
+			list.data[i-count] = list.data[i];
+		}
+		i++;//debug:忘记变量的更新
+	}
+	list.length-=count;
+}
