@@ -1,7 +1,6 @@
-#include <iostream>
 #include <cstdio>
-#include <cstdlib>
 #include "ListTest.h"
+#define value 5
 using namespace std;
 
 //主函数
@@ -9,7 +8,7 @@ using namespace std;
 int main(int argc, char const *argv[]) {
     SqList list1;
     CreatList(list1);
-    Show_1(list1);
+    DeleteSameValue1(list1,value);
     if(!ShowList(list1)){
         cerr<<"the list is null !"<<endl;
     }

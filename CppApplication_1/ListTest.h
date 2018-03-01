@@ -2,6 +2,11 @@
 #ifndef LISTTEST_H
 #define LISTTEST_H
 #include<iostream>
+#include<cmath>
+#include <cstdlib>
+// swap algorithm example
+#include <algorithm> 
+
 using namespace std;
 //定义顺序表
 #define MaxSize 20
@@ -11,35 +16,36 @@ typedef struct {
     ElemType data[MaxSize];
     int length;
 } SqList;
-//初始化
+
+/*
+ * 初始化,先输入长度，第二行是数据
+8
+ 2 5 5 4 2 5 5 6
+ */
 
 bool CreatList(SqList &list) {
-     int length = 0;
-    cout << "inupt the length of list :";
-    cin>>length;
-    cout << endl;
-    cout << "input " << length << " elements :" ;
-    for (int i = 0; i < length; i++) {
+    list.length = 0;
+    cin >> list.length;
+    for (int i = 0; i < list.length; i++) {
         cin >> list.data[i];
     }
-    list.length = length;
-    cout<<endl;
     return true;
 }
-bool ShowList(SqList List)
-{
-//检查特殊情形
+
+bool ShowList(SqList List) {
+    //检查特殊情形
     if (List.length == 0) return false;
     else {
-        for(int i=0;i<List.length;i++){
-            cout<<List.data[i]<<" ";
+        for (int i = 0; i < List.length; i++) {
+            cout << " " << List.data[i];
         }
-        cout<<endl;
+        cout << endl;
         return true;
     }
 }
 //第一题
-bool ReturnMin_delete(SqList &List,ElemType &ReturnValue) {
+
+bool ReturnMin_delete(SqList &List, ElemType &ReturnValue) {
     //检查特殊情形
     if (List.length == 0) return false;
     //找到最小值的序号
@@ -55,15 +61,63 @@ bool ReturnMin_delete(SqList &List,ElemType &ReturnValue) {
     List.length--;
     return true;
 }
-void Show_1(SqList &list){
-     //第一题
+
+void Show_1(SqList &list) {
+    //第一题
     ElemType minValue;
-    if(!ReturnMin_delete(list,minValue) )
-        cout<<"list is null"<<endl;
-    else{
-        cout<<"min value is "<<minValue<<endl;
+    if (!ReturnMin_delete(list, minValue))
+        cout << "list is null" << endl;
+    else {
+        cout << "min value is " << minValue << endl;
     }
 }
+//2
 
+bool Reverse1(SqList &list) {
+    if (list.length == 0) return false;
+    int left = 0, right = list.length - 1;
+    while (left < right) {
+        swap(list.data[left], list.data[right]);
+        left++;
+        right--;
+    }
+    return true;
+}
+
+bool Reverse2(SqList &List) {
+    if (List.length == 0) return false;
+    int len = List.length;
+    for (int i = 0; i < len / 2; i++) {
+        swap(List.data[i], List.data[len - i - 1]);
+    }
+    return true;
+}
+//3
+
+bool DeleteSameValue1(SqList &list, ElemType value) {
+//     2 5 5 4 2 5 5 6
+    if (list.length == 0) return false;
+    int right = 0, left = list.length - 1;
+    while (right < left) {
+        while (list.data[right] != value) right++;
+        while (list.data[left] == value && right < left) left--;
+        list.data[right] = list.data[left];
+        list.data[left]=value;
+    }
+    list.length=left;
+}
+
+bool DeleteSameValue2(SqList &list, ElemType value) {
+    if (list.length == 0) return false;
+    int count = 0, i = 0;
+    while (i < list.length) {
+        if (list.data[i] == value) count++;
+        else {
+            list.data[i - count] = list.data[i];
+        }
+        i++;
+    }
+    list.length -= count;
+}
 #endif /* LISTTEST_H */
 
